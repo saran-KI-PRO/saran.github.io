@@ -65,9 +65,16 @@ export default function App() {
         body: JSON.stringify(contactForm),
       });
 
-      const result = await response.json();
+      let result = null;
+      try {
+        result = await response.json();
+      } catch (parseError) {
+        console.warn("Response is not valid JSON:", parseError);
+      }
+
       if (!response.ok) {
-        throw new Error(result.error || "Failed to submit the contact form.");
+        const errorMessage = result?.error || result?.message || response.statusText || "Failed to submit the contact form.";
+        throw new Error(errorMessage);
       }
 
       setStatusMessage("Your message was received and a reply has been sent.");
