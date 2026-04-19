@@ -33,8 +33,6 @@ export default function App() {
   const [showSkills, setShowSkills] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
-  const [replyMail, setReplyMail] = useState("");
-  const [copyStatus, setCopyStatus] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
 
   const handleContactChange = (event) => {
@@ -46,20 +44,14 @@ export default function App() {
     event.preventDefault();
     setStatusMessage("");
 
-    const reply = `Subject: Thank you for connecting\n\nHi ${contactForm.name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${appData.hero.name}`;
-    setReplyMail(reply);
-    setCopyStatus("");
-    setStatusMessage("Reply generated. Copy it and send it manually from your email client.");
-  };
-
-  const handleCopyReply = async () => {
-    if (!replyMail) return;
-    try {
-      await navigator.clipboard.writeText(replyMail);
-      setCopyStatus("Copied!");
-    } catch (err) {
-      setCopyStatus("Copy failed");
+    if (!contactForm.email) {
+      setStatusMessage("Please enter a valid email address.");
+      return;
     }
+
+    const subject = encodeURIComponent("Thank you for connecting");
+    const body = encodeURIComponent(`Hi ${contactForm.name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${appData.hero.name}`);
+    window.location.href = `mailto:${contactForm.email}?subject=${subject}&body=${body}`;
   };
 
   useEffect(() => {
@@ -291,24 +283,11 @@ export default function App() {
                 />
               </label>
               <button type="submit" className="btn-primary">
-                Generate Reply
+                Send Email
               </button>
             </form>
 
             {statusMessage && <p className="contact-status">{statusMessage}</p>}
-
-            {replyMail && (
-              <div className="reply-mail-card">
-                <div className="reply-mail-header">Reply mail generated from my side</div>
-                <pre>{replyMail}</pre>
-                <div className="reply-mail-actions">
-                  <button type="button" className="btn-secondary" onClick={handleCopyReply}>
-                    Copy Reply
-                  </button>
-                  {copyStatus && <span className="copy-status">{copyStatus}</span>}
-                </div>
-              </div>
-            )}
           </div>
         </section>
       </main>
