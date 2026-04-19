@@ -36,45 +36,20 @@ export default function App() {
   const [replyMail, setReplyMail] = useState("");
   const [copyStatus, setCopyStatus] = useState("");
   const [statusMessage, setStatusMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleContactChange = (event) => {
     const { name, value } = event.target;
     setContactForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleContactSubmit = async (event) => {
+  const handleContactSubmit = (event) => {
     event.preventDefault();
     setStatusMessage("");
-    setIsSubmitting(true);
 
     const reply = `Subject: Thank you for connecting\n\nHi ${contactForm.name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${appData.hero.name}`;
     setReplyMail(reply);
     setCopyStatus("");
-
-    try {
-      const response = await fetch("/api/send-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: contactForm.email,
-          subject: "Thank you for connecting",
-          text: reply,
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to send email.");
-      }
-
-      setStatusMessage("Reply email sent successfully.");
-    } catch (err) {
-      console.error(err);
-      setStatusMessage("Could not send email. Please check the server configuration.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    setStatusMessage("Reply generated. Copy it and send it manually from your email client.");
   };
 
   const handleCopyReply = async () => {
@@ -315,8 +290,8 @@ export default function App() {
                   onChange={handleContactChange}
                 />
               </label>
-              <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send Message"}
+              <button type="submit" className="btn-primary">
+                Generate Reply
               </button>
             </form>
 
