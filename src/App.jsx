@@ -35,20 +35,22 @@ export default function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-         const res = await fetch("/data.json", { cache: "no-cache" });
-        const json = res.ok ? await res.json() : {};
-              setData({ ...fallbackData, ...json });
-              setError(false);
-              setLoading(false); 
-        } catch (err) {
-              console.error("Failed to load data.json:", err);
-              setError(true);      
-              setLoading(false);
-}
+        const res = await fetch(`${import.meta.env.BASE_URL}data.json`, { cache: "no-cache" });
+        if (!res.ok) throw new Error("data.json not found");
+        const json = await res.json();
+        setData({ ...fallbackData, ...json });
+        setError(false);
+      } catch (err) {
+        console.error("Failed to load data.json:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
 
     loadData();
   }, []);
+
 
   if (loading) {
     return <div className="loading-screen">Loading...</div>;
