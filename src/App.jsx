@@ -37,9 +37,10 @@ export default function App() {
       try {
           const res = await fetch(`${import.meta.env.BASE_URL}data.json`, { cache: "no-cache" });
           if (!res.ok) throw new Error("data.json not found");
-          const json = await res.json();
-          setData({ ...fallbackData, ...json });
-          setError(false);
+         const json = await res.json();
+              setData({ ...fallbackData, ...json });
+              setError(false);
+              setLoading(false); 
         } catch (err) {
               console.error("Failed to load data.json:", err);
               setError(true);      
