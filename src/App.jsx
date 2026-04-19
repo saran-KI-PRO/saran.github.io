@@ -30,6 +30,7 @@ export default function App() {
   const [error, setError] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [showSkills, setShowSkills] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -55,6 +56,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
+      <a href="#main-content" className="skip-link">Skip to main content</a>
       {error && (
         <div className="status-banner">
           ⚠️ data.json not found or invalid — using built-in fallback content.
@@ -66,17 +68,24 @@ export default function App() {
           <span className="brand-mark">A</span>
           <span>{data.logo}</span>
         </div>
-        <nav className="nav-links">
-          <a href="#education">Education</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#experience">Experience</a>
-          <a href="#leadership">Leadership</a>
-          <button className="nav-button" onClick={() => setShowSkills(true)}>Skills</button>
-          <a href="#contact">Contact</a>
+        <button
+          className="nav-toggle"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          {mobileMenuOpen ? '✕' : '☰'}
+        </button>
+        <nav className={`nav-links ${mobileMenuOpen ? 'mobile-visible' : 'mobile-hidden'}`}>
+          <a href="#education" onClick={() => setMobileMenuOpen(false)}>Education</a>
+          <a href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</a>
+          <a href="#experience" onClick={() => setMobileMenuOpen(false)}>Experience</a>
+          <a href="#leadership" onClick={() => setMobileMenuOpen(false)}>Leadership</a>
+          <button className="nav-button" onClick={() => { setShowSkills(true); setMobileMenuOpen(false); }}>Skills</button>
+          <a href="#contact" onClick={() => setMobileMenuOpen(false)}>Contact</a>
         </nav>
       </header>
 
-      <main className="page-container">
+      <main className="page-container" id="main-content">
         <section className="hero-section">
           <article className="hero-copy">
             <span className="eyebrow">Welcome to my portfolio</span>
