@@ -8,7 +8,7 @@ const fallbackData = {
     description: "Your description",
     image: "https://via.placeholder.com/300",
   },
-  // stats: [{ value: "0", label: "Projects" }] //,
+  stats: [{ value: "0", label: "Projects" }],
   portfolio: [],
   education: [],
   experience: [],
