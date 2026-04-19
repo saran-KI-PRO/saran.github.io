@@ -86,20 +86,39 @@ textarea {
   display: inline-flex !important;
   align-items: center;
   justify-content: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border: 2px solid rgba(255, 59, 103, 0.8);
-  border-radius: 1.2rem;
-  background: linear-gradient(135deg, rgba(255, 59, 103, 0.3), rgba(110, 82, 255, 0.3));
-  color: #fff;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 0.8rem;
+  background: rgba(255, 255, 255, 0.08);
+  color: transparent;
   cursor: pointer;
-  font-size: 1.6rem;
-  font-weight: bold;
-  transition: all 0.3s ease;
-  box-shadow: 0 12px 40px rgba(255, 59, 103, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  z-index: 51;
   position: relative;
-  visibility: visible;
+  transition: all 0.3s ease;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 51;
+}
+
+.nav-toggle::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 0.9rem;
+  height: 0.9rem;
+  background: rgba(255, 255, 255, 0.16);
+  border-bottom-left-radius: 0.5rem;
+}
+
+.nav-toggle::after {
+  content: "";
+  position: absolute;
+  bottom: 0.6rem;
+  left: 0.6rem;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 .nav-toggle:hover {
@@ -113,12 +132,44 @@ textarea {
   transform: scale(0.92);
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .nav-links {
   display: none;
 }
 
 .nav-links.mobile-hidden {
   display: none;
+}
+
+@media (min-width: 941px) {
+  .nav-links.mobile-hidden {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    position: static;
+    width: auto;
+    padding: 0;
+    gap: 1.5rem;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
 }
 
 .nav-overlay {
@@ -206,9 +257,9 @@ textarea {
 
 .hero-section {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(320px, 1fr);
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 1fr);
   gap: 3rem;
-  align-items: center;
+  align-items: start;
   padding-bottom: 3rem;
 }
 
@@ -319,14 +370,19 @@ textarea {
   color: #c9c5ff;
 }
 
+.hero-copy {
+  max-width: 640px;
+}
+
 .hero-panel {
   display: grid;
   place-items: center;
+  justify-items: end;
 }
 
 .hero-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 460px;
   padding: 1.6rem;
   border-radius: 2rem;
   background: rgba(15, 10, 30, 0.85);

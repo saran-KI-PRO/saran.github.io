@@ -85,8 +85,9 @@ export default function App() {
           className="nav-toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle navigation menu"
+          aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? '✕' : '☰'}
+          <span className="sr-only">Toggle navigation menu</span>
         </button>
         <div 
           className={`nav-overlay ${mobileMenuOpen ? 'active' : ''}`}
