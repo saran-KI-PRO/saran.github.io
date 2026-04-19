@@ -13,10 +13,10 @@
       "year": "2023 - 2027",
       "CGPA": "8.5/10"
     }
-  ],
+  ],//
   "stats": [
-    { "value": "80+", "label": "Projects" }
-  ],
+    { "value": "80+", "label": "Projects" } 
+  ],//
   "portfolio": [
     {
       "title": "Password-Based Irrigation System",
