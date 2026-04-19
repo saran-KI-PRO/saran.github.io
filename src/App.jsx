@@ -35,14 +35,13 @@ export default function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const res = await fetch("/data.json", { cache: "no-cache" });
-        if (!res.ok) throw new Error("data.json not found");
-        const json = await res.json();
-        setData({ ...fallbackData, ...json });
-        setError(false);
-      } catch (err) {
-        setError(true);
-      } finally {
+          const res = await fetch(`${import.meta.env.BASE_URL}data.json`, { cache: "no-cache" });
+          if (!res.ok) throw new Error("data.json not found");
+          const json = await res.json();
+          setData({ ...fallbackData, ...json });
+          setError(false);
+        } catch (err) {
+          console.error("Failed to load data.json:", err);
         setLoading(false);
       }
     };
