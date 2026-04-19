@@ -41,9 +41,10 @@ export default function App() {
           setData({ ...fallbackData, ...json });
           setError(false);
         } catch (err) {
-          console.error("Failed to load data.json:", err);
-        setLoading(false);
-      }
+              console.error("Failed to load data.json:", err);
+              setError(true);      
+              setLoading(false);
+}
     };
 
     loadData();
