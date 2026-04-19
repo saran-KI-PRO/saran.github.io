@@ -66,6 +66,59 @@ async function readContactsCsv() {
   });
 }
 
+function buildHtmlLogPage(contacts) {
+  const rows = contacts.map((entry) => `
+    <tr>
+      <td>${entry.timestamp}</td>
+      <td>${entry.name}</td>
+      <td>${entry.email}</td>
+      <td>${entry.message}</td>
+      <td>${entry.status}</td>
+    </tr>
+  `).join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Log</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #070712; color: #fff; margin: 0; padding: 2rem; }
+    h1 { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    th, td { padding: 0.75rem 1rem; border: 1px solid rgba(255,255,255,0.12); }
+    th { background: rgba(255,255,255,0.05); text-align: left; }
+    tr:nth-child(even) { background: rgba(255,255,255,0.03); }
+    .status-sent { color: #8fff9d; font-weight: 700; }
+    .status-failed { color: #ff8b8b; font-weight: 700; }
+    .actions { margin-top: 1rem; }
+    .actions a { color: #9be7ff; text-decoration: none; margin-right: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Contact Log</h1>
+  <p>Backend contact log visible here. Use <strong>?download=csv</strong> to export the raw file.</p>
+  <div class="actions">
+    <a href="/api/contact?download=csv">Download CSV</a>
+    <a href="/api/contact">View JSON</a>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Message</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+</body>
+</html>`;
+}
+
 function createTransporter() {
   if (!process.env.EMAIL_HOST || !process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     return null;
@@ -98,6 +151,13 @@ export default async function handler(req, res) {
       }
 
       const contacts = await readContactsCsv();
+      if (query.get("view") === "html" || query.get("format") === "html") {
+        const html = buildHtmlLogPage(contacts);
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.statusCode = 200;
+        return res.end(html);
+      }
+
       return res.status(200).json({ contacts });
     } catch (error) {
       console.error("Failed to load contact history:", error);
