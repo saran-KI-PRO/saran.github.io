@@ -1,0 +1,97 @@
+{
+  "logo": "Saran R K",
+  "hero": {
+    "name": "Saran R K",
+    "title": "Cyber Security Engineer",
+    "description": "Designing secure portfolio experiences with polished visuals, clear brand systems, and trust-first user journeys.",
+    "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80"
+  },
+   "education": [
+    {
+      "degree": "B.E Electrical And Electronics ",
+      "institution": "Kumaraguru College of Technology",
+      "year": "2023 - 2027",
+      "CGPA": "8.5/10"
+    }
+  ],
+  "stats": [
+    { "value": "80+", "label": "Projects" }
+  ],
+  "portfolio": [
+    {
+      "title": "Password-Based Irrigation System",
+      "category": "Embedded Systems - PIC Microcontroller",
+      "description": "Designed and developed a secure irrigation system to prevent unauthorized water and electricity usage. Implemented password authentication and automated motor control using Embedded C. Integrated relay-based switching for efficient and controlled irrigation. Improved system security and operational efficiency",
+      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=900&q=80"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Electrical Engineer Intern",
+      "company": "BHEL Trichy",
+      "duration": "2025 June",
+      "description": "Gained practical exposure to industrial electrical systems and operations Observed large-scale power equipment and system workf"
+    },
+    {
+      "role": "Electrical Engineer Intern",
+      "company": "NLC India Ltd., Neyveli",
+      "duration": "2025 ",
+      "description": "Learned about power generation and Transmission systems Understood real-time industrial applications of electrical engineering concepts"
+    },
+    {
+      "role": "Research Intern",
+      "company": "Cellex Battery System",
+      "duration": "2024 September - 2025 January",
+      "description": "Conducted Total Cost of Ownership (TCO) analysis for batterysystems"
+    }
+  ],
+  "leadership": [
+    {
+      "title": "Club President",
+      "organization": "LEED Kumaraguru",
+      "duration": "2025 - 2026",
+      "description": "Created opportunities for freshers to explore entrepreneurship through workshops and startup events. Led teams and fostered collaboration to execute initiatives effectively. Coordinated with stakeholders and mentored students to build entrepreneurial and teamwork skills"
+    }
+  ],
+  "skills": {
+    "technical": [
+      "C Programming",
+      "Embedded Systems",
+      "Python",
+      "Cybersecurity",
+      "MATLAB",
+      "Circuit Design",
+      "Microcontrollers (PIC)"
+    ],
+    "soft": [
+      "Leadership",
+      "Communication",
+      "Problem Solving",
+      "Team Collaboration",
+      "Project Management",
+      "Time Management"
+    ],
+    "certifications": [
+      {
+        "name": "Certified Ethical Hacker (CEH)",
+        "link": "https://www.eccouncil.org/programs/certified-ethical-hacker-ceh/"
+      },
+      {
+        "name": "CompTIA Security+",
+        "link": "https://www.comptia.org/certifications/security"
+      },
+      {
+        "name": "Python for Data Science",
+        "link": "https://www.coursera.org/learn/python-data-science"
+      },
+      {
+        "name": "Embedded Systems Design",
+        "link": "https://www.udemy.com/topic/embedded-systems/"
+      }
+    ]
+  },
+  "contact": {
+    "headline": "Let’s build secure digital experiences together.",
+    "subtext": "Share your project brief, and I’ll help shape a polished website with reliability, clarity, and trust."
+  }
+}

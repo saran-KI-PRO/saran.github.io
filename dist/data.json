@@ -1,0 +1,55 @@
+{
+  "logo": "Abdullah",
+  "hero": {
+    "name": "Abdullah Al Sharif",
+    "title": "Cyber Security Engineer",
+    "description": "Designing secure portfolio experiences with polished visuals, clear brand systems, and trust-first user journeys.",
+    "image": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=900&q=80"
+  },
+  "education": [],
+  "stats": [
+    { "value": "80+", "label": "Projects" }
+  ],
+  "portfolio": [
+    {
+      "title": "Digital Identity System",
+      "category": "Brand & Security",
+      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "title": "Secure Dashboard UI",
+      "category": "Product Design",
+      "image": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=900&q=80"
+    },
+    {
+      "title": "Portfolio Experience",
+      "category": "Web Design",
+      "image": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80"
+    }
+  ],
+  "experience": [
+    {
+      "role": "Senior Security Engineer",
+      "company": "NexTech Labs",
+      "duration": "2023 - Present",
+      "description": "Leading penetration testing, vulnerability assessments, and secure UI improvements for enterprise applications."
+    },
+    {
+      "role": "Product Security Lead",
+      "company": "ShieldWorks",
+      "duration": "2021 - 2023",
+      "description": "Built product security workflows and translated technical findings into polished visual interfaces."
+    },
+    {
+      "role": "Security Consultant",
+      "company": "Cybernetics Co.",
+      "duration": "2019 - 2021",
+      "description": "Delivered strategic security roadmaps and client-facing recommendations for digital products."
+    }
+  ],
+  "skills": {},
+  "contact": {
+    "headline": "Let’s build secure digital experiences together.",
+    "subtext": "Share your project brief, and I’ll help shape a polished website with reliability, clarity, and trust."
+  }
+}
