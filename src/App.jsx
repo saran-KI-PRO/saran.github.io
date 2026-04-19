@@ -64,10 +64,6 @@ export default function App() {
       )}
 
       <header className="top-nav">
-        <div className="brand-block">
-          <span className="brand-mark">A</span>
-          <span>{data.logo}</span>
-        </div>
         <button
           className="nav-toggle"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
