@@ -71,6 +71,10 @@ export default function App() {
         >
           {mobileMenuOpen ? '✕' : '☰'}
         </button>
+        <div 
+          className={`nav-overlay ${mobileMenuOpen ? 'active' : ''}`}
+          onClick={() => setMobileMenuOpen(false)}
+        />
         <nav className={`nav-links ${mobileMenuOpen ? 'mobile-visible' : 'mobile-hidden'}`}>
           <a href="#education" onClick={() => setMobileMenuOpen(false)}>Education</a>
           <a href="#portfolio" onClick={() => setMobileMenuOpen(false)}>Portfolio</a>
