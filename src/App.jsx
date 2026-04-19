@@ -122,7 +122,7 @@ export default function App() {
                 />
               </div>
               <p className="hero-note">
-                A modern portfolio experience with strong visual detail and polished presentation.
+               Renewable Energy | Power Systems | Embedded Applications
               </p>
             </div>
           </aside>
