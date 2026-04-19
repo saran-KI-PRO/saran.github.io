@@ -34,24 +34,50 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
   const [statusMessage, setStatusMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleContactChange = (event) => {
     const { name, value } = event.target;
     setContactForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleContactSubmit = (event) => {
+  const handleContactSubmit = async (event) => {
     event.preventDefault();
     setStatusMessage("");
+    setIsSubmitting(true);
 
     if (!contactForm.email) {
       setStatusMessage("Please enter a valid email address.");
+      setIsSubmitting(false);
       return;
     }
 
-    const subject = encodeURIComponent("Thank you for connecting");
-    const body = encodeURIComponent(`Hi ${contactForm.name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${appData.hero.name}`);
-    window.location.href = `mailto:${contactForm.email}?subject=${subject}&body=${body}`;
+    if (!contactForm.message.trim()) {
+      setStatusMessage("Please enter a message.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactForm),
+      });
+
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to submit the contact form.");
+      }
+
+      setStatusMessage("Your message was received and a reply has been sent.");
+      setContactForm({ name: "", email: "", message: "" });
+    } catch (err) {
+      console.error(err);
+      setStatusMessage(err.message || "Could not submit the form.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -283,8 +309,8 @@ export default function App() {
                   onChange={handleContactChange}
                 />
               </label>
-              <button type="submit" className="btn-primary">
-                Send Email
+              <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
 
