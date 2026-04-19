@@ -1,6 +1,9 @@
 import { promises as fs } from "fs";
 import path from "path";
+import dotenv from "dotenv";
 import nodemailer from "nodemailer";
+
+dotenv.config({ path: path.resolve(process.cwd(), ".env") });
 
 const CSV_PATH = process.env.CONTACT_STORE_PATH || path.join(process.cwd(), "contacts.csv");
 
@@ -33,8 +36,6 @@ function createTransporter() {
   });
 }
 
-const transporter = createTransporter();
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -57,8 +58,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Unable to save contact information." });
   }
 
+  const transporter = createTransporter();
   if (!transporter) {
     return res.status(500).json({ error: "Email configuration is missing. Please set EMAIL_HOST, EMAIL_USER, and EMAIL_PASS." });
+  }
+
+  try {
+    await transporter.verify();
+  } catch (verifyError) {
+    console.error("SMTP verification failed:", verifyError);
+    return res.status(500).json({ error: "Email server configuration is invalid. Check SMTP settings." });
   }
 
   const replySubject = process.env.EMAIL_REPLY_SUBJECT || "Thank you for connecting";
