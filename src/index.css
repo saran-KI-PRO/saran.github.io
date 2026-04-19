@@ -233,12 +233,28 @@ textarea {
 .page-container {
   width: min(1200px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2.5rem 1rem 5rem;
+  padding: 6rem 1rem 5rem;
 }
 
 @media (min-width: 768px) {
   .page-container {
-    padding: 2.5rem 2rem 5rem;
+    padding: 6rem 2rem 5rem;
+  }
+}
+
+@media (max-width: 940px) {
+  .top-nav {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .nav-toggle {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .nav-toggle::before {
+    top: 0.7rem;
   }
 }
 
