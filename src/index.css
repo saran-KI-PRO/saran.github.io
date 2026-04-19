@@ -101,6 +101,10 @@ textarea {
   border-color: rgba(255, 255, 255, 0.28);
 }
 
+.nav-toggle:active {
+  transform: scale(0.95);
+}
+
 .nav-links {
   display: none;
 }
@@ -112,22 +116,67 @@ textarea {
 .nav-links.mobile-visible {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: calc(100% + 0.75rem);
+  position: fixed;
+  top: 0;
   right: 0;
-  background: rgba(10, 8, 21, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 1.5rem;
-  padding: 1rem;
-  gap: 1rem;
-  min-width: 220px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+  bottom: 0;
+  width: 280px;
+  background: linear-gradient(180deg, rgba(20, 15, 40, 0.98), rgba(10, 8, 21, 0.98));
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 4rem 1.5rem 2rem;
+  gap: 1.5rem;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(24px);
+  animation: slideInRight 0.3s ease;
+  z-index: 25;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.nav-links.mobile-visible::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: -1;
 }
 
 .nav-links.mobile-visible a,
 .nav-links.mobile-visible .nav-button {
   width: 100%;
+  padding: 0.9rem 1rem;
+  text-align: center;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  color: #f5f5ff;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.nav-links.mobile-visible a:hover,
+.nav-links.mobile-visible .nav-button:hover {
+  background: rgba(255, 59, 103, 0.2);
+  border-color: rgba(255, 59, 103, 0.4);
+  transform: translateX(-4px);
+}
+
+.nav-links.mobile-visible a:active,
+.nav-links.mobile-visible .nav-button:active {
+  transform: scale(0.98);
 }
 
 /* Mobile Navigation Menu */
@@ -748,10 +797,6 @@ textarea {
 
   .nav-links.mobile-hidden {
     display: none;
-  }
-
-  .nav-links.mobile-visible {
-    display: flex;
   }
 
   /* Hero Section Mobile */
