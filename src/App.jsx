@@ -35,6 +35,10 @@ export default function App() {
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
   const [statusMessage, setStatusMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [contactLog, setContactLog] = useState([]);
+  const [isLoadingLog, setIsLoadingLog] = useState(false);
+  const [logError, setLogError] = useState("");
+  const [showContactLog, setShowContactLog] = useState(false);
 
   const handleContactChange = (event) => {
     const { name, value } = event.target;
@@ -79,11 +83,35 @@ export default function App() {
 
       setStatusMessage("Your message was received and a reply has been sent.");
       setContactForm({ name: "", email: "", message: "" });
+
+      if (showContactLog) {
+        loadContactLog();
+      }
     } catch (err) {
       console.error(err);
       setStatusMessage(err.message || "Could not submit the form.");
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const loadContactLog = async () => {
+    setIsLoadingLog(true);
+    setLogError("");
+
+    try {
+      const response = await fetch("/api/contact");
+      if (!response.ok) {
+        throw new Error(`Unable to load contact history (${response.status})`);
+      }
+
+      const data = await response.json();
+      setContactLog(data.contacts || []);
+    } catch (err) {
+      console.error(err);
+      setLogError(err.message || "Unable to load contact history.");
+    } finally {
+      setIsLoadingLog(false);
     }
   };
 
@@ -316,12 +344,76 @@ export default function App() {
                   onChange={handleContactChange}
                 />
               </label>
-              <button type="submit" className="btn-primary" disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send Message"}
-              </button>
+              <div className="contact-form-actions">
+                <button type="submit" className="btn-primary" disabled={isSubmitting}>
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </button>
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() => {
+                    setShowContactLog((prev) => !prev);
+                    if (!showContactLog && !contactLog.length) {
+                      loadContactLog();
+                    }
+                  }}
+                >
+                  {showContactLog ? "Hide contact log" : "View contact log"}
+                </button>
+                <a
+                  className="btn-secondary btn-download"
+                  href="/api/contact?download=csv"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Download CSV
+                </a>
+              </div>
             </form>
 
             {statusMessage && <p className="contact-status">{statusMessage}</p>}
+
+            {showContactLog && (
+              <div className="contact-log-panel">
+                <div className="contact-log-header">
+                  <h3>Contact history</h3>
+                  <p>Each entry shows whether the reply mail was sent successfully.</p>
+                </div>
+                {isLoadingLog && <p className="contact-status">Loading contact history...</p>}
+                {logError && <p className="contact-status">{logError}</p>}
+                {!isLoadingLog && !logError && contactLog.length === 0 && (
+                  <p className="contact-status">No contact submissions found yet.</p>
+                )}
+                {!isLoadingLog && !logError && contactLog.length > 0 && (
+                  <div className="contact-log-table-wrapper">
+                    <table className="contact-log-table">
+                      <thead>
+                        <tr>
+                          <th>Time</th>
+                          <th>Name</th>
+                          <th>Email</th>
+                          <th>Message</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {contactLog.map((entry, index) => (
+                          <tr key={`${entry.email}-${index}`}>
+                            <td>{new Date(entry.timestamp).toLocaleString()}</td>
+                            <td>{entry.name}</td>
+                            <td>{entry.email}</td>
+                            <td>{entry.message}</td>
+                            <td className={entry.status === "sent" ? "status-sent" : "status-failed"}>
+                              {entry.status}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </section>
       </main>

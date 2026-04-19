@@ -689,6 +689,78 @@ textarea {
   padding: 1rem 1.6rem;
 }
 
+.contact-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+  align-items: center;
+}
+
+.contact-form-actions .btn-secondary {
+  min-width: 10rem;
+}
+
+.contact-form-actions .btn-download {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.contact-log-panel {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.contact-log-header {
+  margin-bottom: 1rem;
+}
+
+.contact-log-header h3 {
+  margin: 0 0 0.5rem;
+}
+
+.contact-log-table-wrapper {
+  overflow-x: auto;
+}
+
+.contact-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.contact-log-table th,
+.contact-log-table td {
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: left;
+  vertical-align: top;
+  font-size: 0.95rem;
+}
+
+.contact-log-table th {
+  color: #f4f4ff;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.contact-log-table tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.status-sent {
+  color: #a5ffeb;
+  font-weight: 700;
+}
+
+.status-failed {
+  color: #ff8b8b;
+  font-weight: 700;
+}
+
 .contact-status {
   margin-top: 1rem;
   color: #a5ffeb;

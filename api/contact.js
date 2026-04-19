@@ -16,8 +16,54 @@ async function ensureCsvHeader() {
   try {
     await fs.access(CSV_PATH);
   } catch {
-    await fs.writeFile(CSV_PATH, "timestamp,name,email,message\n", "utf8");
+    await fs.writeFile(CSV_PATH, "timestamp,name,email,message,status\n", "utf8");
   }
+}
+
+function parseCsvLine(line) {
+  const values = [];
+  let current = "";
+  let insideQuotes = false;
+
+  for (let i = 0; i < line.length; i++) {
+    const char = line[i];
+
+    if (char === '"') {
+      if (insideQuotes && line[i + 1] === '"') {
+        current += '"';
+        i += 1;
+      } else {
+        insideQuotes = !insideQuotes;
+      }
+      continue;
+    }
+
+    if (char === "," && !insideQuotes) {
+      values.push(current);
+      current = "";
+      continue;
+    }
+
+    current += char;
+  }
+
+  values.push(current);
+  return values;
+}
+
+async function readContactsCsv() {
+  await ensureCsvHeader();
+  const csv = await fs.readFile(CSV_PATH, "utf8");
+  const rows = csv.split(/\r?\n/).filter((row) => row.trim() !== "");
+  const header = rows.shift()?.split(",") || [];
+
+  return rows.map((row) => {
+    const values = parseCsvLine(row);
+    return header.reduce((acc, key, index) => {
+      acc[key.replace(/"/g, "")] = values[index]?.replace(/^"|"$/g, "") || "";
+      return acc;
+    }, {});
+  });
 }
 
 function createTransporter() {
@@ -37,6 +83,28 @@ function createTransporter() {
 }
 
 export default async function handler(req, res) {
+  const url = new URL(req.url || "", "http://localhost");
+  const query = url.searchParams;
+
+  if (req.method === "GET") {
+    try {
+      await ensureCsvHeader();
+      if (query.get("download") === "csv" || query.get("format") === "csv") {
+        const csv = await fs.readFile(CSV_PATH, "utf8");
+        res.setHeader("Content-Type", "text/csv; charset=utf-8");
+        res.setHeader("Content-Disposition", "attachment; filename=contacts.csv");
+        res.statusCode = 200;
+        return res.end(csv);
+      }
+
+      const contacts = await readContactsCsv();
+      return res.status(200).json({ contacts });
+    } catch (error) {
+      console.error("Failed to load contact history:", error);
+      return res.status(500).json({ error: "Unable to load contact history." });
+    }
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -48,7 +116,31 @@ export default async function handler(req, res) {
   }
 
   const timestamp = new Date().toISOString();
-  const row = [timestamp, name || "", email, message].map(escapeCsv).join(",") + "\n";
+  let status = "failed";
+  let sendError = null;
+  const transporter = createTransporter();
+
+  if (!transporter) {
+    sendError = new Error("Email configuration is missing.");
+  } else {
+    try {
+      await transporter.verify();
+      const replySubject = process.env.EMAIL_REPLY_SUBJECT || "Thank you for connecting";
+      const replyBody = `Hi ${name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${process.env.EMAIL_FROM_NAME || "Saran R K"}`;
+      await transporter.sendMail({
+        from: `"${process.env.EMAIL_FROM_NAME || "Saran R K"}" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: replySubject,
+        text: replyBody,
+      });
+      status = "sent";
+    } catch (error) {
+      console.error("Failed to send reply email:", error);
+      sendError = error;
+    }
+  }
+
+  const row = [timestamp, name || "", email, message, status].map(escapeCsv).join(",") + "\n";
 
   try {
     await ensureCsvHeader();
@@ -58,30 +150,7 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "Unable to save contact information." });
   }
 
-  const transporter = createTransporter();
-  if (!transporter) {
-    return res.status(500).json({ error: "Email configuration is missing. Please set EMAIL_HOST, EMAIL_USER, and EMAIL_PASS." });
-  }
-
-  try {
-    await transporter.verify();
-  } catch (verifyError) {
-    console.error("SMTP verification failed:", verifyError);
-    return res.status(500).json({ error: "Email server configuration is invalid. Check SMTP settings." });
-  }
-
-  const replySubject = process.env.EMAIL_REPLY_SUBJECT || "Thank you for connecting";
-  const replyBody = `Hi ${name || "there"},\n\nThank you for connecting with me. I appreciate you reaching out and I look forward to future collaboration.\n\nBest regards,\n${process.env.EMAIL_FROM_NAME || "Saran R K"}`;
-
-  try {
-    await transporter.sendMail({
-      from: `"${process.env.EMAIL_FROM_NAME || "Saran R K"}" <${process.env.EMAIL_USER}>`,
-      to: email,
-      subject: replySubject,
-      text: replyBody,
-    });
-  } catch (error) {
-    console.error("Failed to send reply email:", error);
+  if (sendError) {
     return res.status(500).json({ error: "Contact saved but failed to send reply email." });
   }
 
