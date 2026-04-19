@@ -19,7 +19,7 @@
       "title": "Password-Based Irrigation System",
       "category": "Embedded Systems - PIC Microcontroller",
       "description": "Designed and developed a secure irrigation system to prevent unauthorized water and electricity usage. Implemented password authentication and automated motor control using Embedded C. Integrated relay-based switching for efficient and controlled irrigation. Improved system security and operational efficiency",
-      "image": "https://images.unsplash.com/photo-1518779578993-ec3579fee39f?auto=format&fit=crop&w=900&q=80"
+      "image": "myphoto.jpg"
     }
   ],
   "experience": [
@@ -44,9 +44,11 @@
   ],
   "leadership": [
     {
-      "title": "Club President",
+      "name": "Club President",
       "organization": "LEED Kumaraguru",
-      "link":"leed.kct.ac.in",
+<<<<<<< Updated upstream
+      "link":"https://leed.kct.ac.in/",
+>>>>>>> Stashed changes
       "duration": "2025 - 2026",
       "description": "Created opportunities for freshers to explore entrepreneurship through workshops and startup events. Led teams and fostered collaboration to execute initiatives effectively. Coordinated with stakeholders and mentored students to build entrepreneurial and teamwork skills"
     }
