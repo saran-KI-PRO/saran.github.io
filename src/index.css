@@ -1063,3 +1063,19 @@ textarea {
 .skip-link:focus {
   top: 6px;
 }
+
+/* LinkedIn Link */
+.linkedin-link {
+  display: inline-block;
+  margin-left: 1rem;
+  color: #0077b5;
+  transition: color 0.2s ease;
+}
+
+.linkedin-link:hover {
+  color: #005885;
+}
+
+.linkedin-link svg {
+  vertical-align: middle;
+}
