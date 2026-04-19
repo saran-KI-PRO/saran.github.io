@@ -35,9 +35,8 @@ export default function App() {
   useEffect(() => {
     const loadData = async () => {
       try {
-          const res = await fetch("/data.json", { cache: "no-cache" });
-          if (!res.ok) throw new Error("data.json not found");
-         const json = await res.json();
+         const res = await fetch("/data.json", { cache: "no-cache" });
+        const json = res.ok ? await res.json() : {};
               setData({ ...fallbackData, ...json });
               setError(false);
               setLoading(false); 
