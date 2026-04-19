@@ -1,4 +1,5 @@
 ﻿﻿import { useState, useEffect } from "react";
+import data from "./data.json";
 
 const fallbackData = {
   logo: "LOGO",
@@ -25,7 +26,7 @@ const fallbackData = {
 };
 
 export default function App() {
-  const [data, setData] = useState(fallbackData);
+  const [appData, setAppData] = useState(fallbackData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -33,22 +34,15 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.BASE_URL}data.json`, { cache: "no-cache" });
-        if (!res.ok) throw new Error("data.json not found");
-        const json = await res.json();
-        setData({ ...fallbackData, ...json });
-        setError(false);
-      } catch (err) {
-        console.error("Failed to load data.json:", err);
-        setError(true);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadData();
+    try {
+      setAppData({ ...fallbackData, ...data });
+      setError(false);
+    } catch (err) {
+      console.error("Failed to load data:", err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
 
@@ -61,7 +55,7 @@ export default function App() {
       <a href="#main-content" className="skip-link">Skip to main content</a>
       {error && (
         <div className="status-banner">
-          ⚠️ data.json not found or invalid — using built-in fallback content.
+          ⚠️ Data loading failed — using built-in fallback content.
         </div>
       )}
 
@@ -91,9 +85,9 @@ export default function App() {
         <section className="hero-section">
           <article className="hero-copy">
             <span className="eyebrow">Welcome to my portfolio</span>
-            <h1>{data.hero.name}</h1>
-            <p className="hero-title">{data.hero.title}</p>
-            <p className="hero-description">{data.hero.description}</p>
+            <h1>{appData.hero.name}</h1>
+            <p className="hero-title">{appData.hero.title}</p>
+            <p className="hero-description">{appData.hero.description}</p>
             <div className="hero-actions">
               <a className="btn-primary" href="#contact">
                 Hire Me
@@ -104,7 +98,7 @@ export default function App() {
             </div>
 
             <div className="stats-grid">
-              {data.stats.map((item) => (
+              {appData.stats.map((item) => (
                 <article key={item.label} className="stat-card">
                   <strong>{item.value}</strong>
                   <span>{item.label}</span>
@@ -119,8 +113,8 @@ export default function App() {
               <div className="hero-frame">
                 <img
                   className="hero-avatar"
-                  src={data.hero.image}
-                  alt={data.hero.name}
+                  src={appData.hero.image}
+                  alt={appData.hero.name}
                 />
               </div>
               <p className="hero-note">
@@ -137,7 +131,7 @@ export default function App() {
           </div>
 
           <div className="experience-list">
-            {data.education.map((item) => (
+            {appData.education.map((item) => (
               <article key={item.degree} className="experience-item">
                 <div className="experience-head">
                   <div>
@@ -159,7 +153,7 @@ export default function App() {
           </div>
 
           <div className="portfolio-grid">
-            {data.portfolio.map((item) => (
+            {appData.portfolio.map((item) => (
               <article 
                 key={item.title} 
                 className="project-card"
@@ -184,7 +178,7 @@ export default function App() {
           </div>
 
           <div className="experience-list">
-            {data.experience.map((item) => (
+            {appData.experience.map((item) => (
               <article key={item.role} className="experience-item">
                 <div className="experience-head">
                   <div>
@@ -206,7 +200,7 @@ export default function App() {
           </div>
 
           <div className="experience-list">
-            {data.leadership.map((item) => (
+            {appData.leadership.map((item) => (
               <article key={item.title} className="experience-item">
                 <div className="experience-head">
                   <div>
@@ -225,8 +219,8 @@ export default function App() {
           <div className="contact-panel">
             <div>
               <span className="section-label">Contact</span>
-              <h2>{data.contact.headline}</h2>
-              <p>{data.contact.subtext}</p>
+              <h2>{appData.contact.headline}</h2>
+              <p>{appData.contact.subtext}</p>
             </div>
 
             <form className="contact-form">
@@ -290,7 +284,7 @@ export default function App() {
               <div className="skills-section">
                 <h3 className="skills-category-title">Technical Skills</h3>
                 <div className="skills-grid">
-                  {data.skills.technical && data.skills.technical.map((skill) => (
+                  {appData.skills.technical && appData.skills.technical.map((skill) => (
                     <div key={skill} className="skill-tag">
                       {skill}
                     </div>
@@ -301,7 +295,7 @@ export default function App() {
               <div className="skills-section">
                 <h3 className="skills-category-title">Soft Skills</h3>
                 <div className="skills-grid">
-                  {data.skills.soft && data.skills.soft.map((skill) => (
+                  {appData.skills.soft && appData.skills.soft.map((skill) => (
                     <div key={skill} className="skill-tag soft-skill">
                       {skill}
                     </div>
@@ -312,7 +306,7 @@ export default function App() {
               <div className="skills-section">
                 <h3 className="skills-category-title">Certifications</h3>
                 <div className="certifications-list">
-                  {data.skills.certifications && data.skills.certifications.map((cert) => (
+                  {appData.skills.certifications && appData.skills.certifications.map((cert) => (
                     <a 
                       key={cert.name}
                       href={cert.link}
