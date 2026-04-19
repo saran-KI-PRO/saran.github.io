@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <style>
+      .srk-bg { fill: #ff3b67; }
+      .srk-text { font-family: Arial, sans-serif; font-size: 80px; font-weight: bold; fill: white; text-anchor: middle; dominant-baseline: middle; }
+    </style>
+  </defs>
+  <rect class="srk-bg" width="200" height="200" rx="40"/>
+  <text class="srk-text" x="100" y="100">SRK</text>
+</svg>
