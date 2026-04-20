@@ -172,7 +172,7 @@ export default async function handler(req, res) {
   const { name, email, message } = req.body || {};
 
   if (!email || !message) {
-    return res.status(400).json({ error: "Name, email, and message are required." });
+    return res.status(400).json({ error: "Email and message are required." });
   }
 
   const timestamp = new Date().toISOString();
