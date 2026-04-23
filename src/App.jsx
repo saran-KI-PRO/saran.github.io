@@ -19,10 +19,7 @@ const fallbackData = {
     soft: [],
     certifications: []
   },
-  contact: {
-    headline: "Reach out to start a project.",
-    subtext: "Send a message and let’s build something together.",
-  },
+
 };
 
 export default function App() {
@@ -65,19 +62,13 @@ export default function App() {
         body: JSON.stringify(contactForm),
       });
 
-      let result = null;
-      try {
-        result = await response.json();
-      } catch (parseError) {
-        console.warn("Response is not valid JSON:", parseError);
-      }
-
       if (!response.ok) {
-        const errorMessage = result?.error || result?.message || response.statusText || "Failed to submit the contact form.";
+        const result = await response.json().catch(() => ({}));
+        const errorMessage = result?.error || response.statusText || "Failed to submit the contact form.";
         throw new Error(errorMessage);
       }
 
-      setStatusMessage("Your message was received and a reply has been sent.");
+      setStatusMessage("Thank you! Your message has been received.");
       setContactForm({ name: "", email: "", message: "" });
     } catch (err) {
       console.error(err);
@@ -280,9 +271,9 @@ export default function App() {
         <section id="contact" className="section-block contact-section">
           <div className="contact-panel">
             <div>
-              <span className="section-label">Contact</span>
-              <h2>{appData.contact.headline}</h2>
-              <p>{appData.contact.subtext}</p>
+              <span className="section-label">CONTACT</span>
+              <h2>Let's build secure digital experiences together.</h2>
+              <p>Share your project brief, and I'll help shape a polished website with reliability, clarity, and trust.</p>
             </div>
 
             <form className="contact-form" onSubmit={handleContactSubmit}>
@@ -327,6 +318,7 @@ export default function App() {
 
           </div>
         </section>
+
       </main>
 
       {selectedProject && (
