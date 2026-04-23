@@ -53,10 +53,8 @@ async function deleteContact(id) {
 }
 
 export default async function handler(req, res) {
-  const url = new URL(req.url || "", "http://localhost");
-  const pathname = url.pathname;
-
-  if (pathname === "/api/contact" && req.method === "GET") {
+  // GET - retrieve all contacts
+  if (req.method === "GET") {
     try {
       const contacts = await readContacts();
       res.setHeader("Content-Type", "application/json");
@@ -67,7 +65,8 @@ export default async function handler(req, res) {
     }
   }
 
-  if (pathname === "/api/contact" && req.method === "POST") {
+  // POST - create new contact
+  if (req.method === "POST") {
     const { name, email, message } = req.body || {};
 
     if (!email || !message) {
@@ -83,7 +82,8 @@ export default async function handler(req, res) {
     }
   }
 
-  if (pathname === "/api/contact/update" && req.method === "PUT") {
+  // PUT - update existing contact
+  if (req.method === "PUT") {
     const contact = req.body;
 
     if (!contact.id || !contact.email || !contact.message) {
@@ -99,8 +99,9 @@ export default async function handler(req, res) {
     }
   }
 
-  if (pathname === "/api/contact/delete" && req.method === "DELETE") {
-    const id = url.searchParams.get("id");
+  // DELETE - delete a contact
+  if (req.method === "DELETE") {
+    const id = req.query?.id || new URL(req.url || "", "http://localhost").searchParams.get("id");
 
     if (!id) {
       return res.status(400).json({ error: "ID is required." });

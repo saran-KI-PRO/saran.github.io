@@ -12,12 +12,12 @@ const distPath = path.join(__dirname, "dist");
 
 app.use(express.json());
 
-// API routes - MUST be before static files
-app.post("/api/contact", async (req, res) => {
+// API routes - MUST come before static files
+app.get("/api/contact", async (req, res) => {
   await contactHandler(req, res);
 });
 
-app.get("/api/contact", async (req, res) => {
+app.post("/api/contact", async (req, res) => {
   await contactHandler(req, res);
 });
 
@@ -29,12 +29,16 @@ app.delete("/api/contact/delete", async (req, res) => {
   await contactHandler(req, res);
 });
 
-// Static files
+// Serve static files
 app.use(express.static(distPath));
 
-// SPA routes - must be last
+// Fallback for SPA - serve index.html for all other routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
 });
 
 app.listen(port, () => {
