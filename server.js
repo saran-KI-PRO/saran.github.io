@@ -12,8 +12,14 @@ const distPath = path.join(__dirname, "dist");
 
 app.use(express.json());
 
-app.all("/api/contact", async (req, res) => {
+// API routes
+app.all("/api/contact*", async (req, res) => {
   await contactHandler(req, res);
+});
+
+// Admin dashboard route
+app.get("/admin", (req, res) => {
+  res.sendFile(path.join(distPath, "index.html"));
 });
 
 app.use(express.static(distPath));

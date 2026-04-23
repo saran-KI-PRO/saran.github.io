@@ -15,3 +15,5 @@ yarn-error.log*
 .cache/
 .vercel/
 contacts.csv
+contacts.json
+
