@@ -12,19 +12,28 @@ const distPath = path.join(__dirname, "dist");
 
 app.use(express.json());
 
-// API routes
-app.all("/api/contact*", async (req, res) => {
+// API routes - MUST be before static files
+app.post("/api/contact", async (req, res) => {
   await contactHandler(req, res);
 });
 
-// Admin dashboard route
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(distPath, "index.html"));
+app.get("/api/contact", async (req, res) => {
+  await contactHandler(req, res);
 });
 
+app.put("/api/contact/update", async (req, res) => {
+  await contactHandler(req, res);
+});
+
+app.delete("/api/contact/delete", async (req, res) => {
+  await contactHandler(req, res);
+});
+
+// Static files
 app.use(express.static(distPath));
 
-app.get(/.*/, (req, res) => {
+// SPA routes - must be last
+app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
